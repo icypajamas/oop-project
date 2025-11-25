@@ -156,7 +156,7 @@ class Course {
         courseCode = "";
         title = "";
         creditHours = 0.0;
-
+        this.courseInstructor = new CourseInstructor();
     }
 
     public Course(String courseCode, String title, double creditHours) {
