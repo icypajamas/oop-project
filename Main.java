@@ -131,39 +131,18 @@ class Course {
     static int totalCourses = 0;
     private CourseInstructor courseInstructor;
 
-    class CourseInstructor {
-        String name;
-        String qualification;
-
-        public CourseInstructor() {
-            name = "";
-            qualification = "";
-        }
-
-        public CourseInstructor(String name, String qualification) {
-            this.name = name;
-            this.qualification = qualification;
-        }
-
-        public void displayInstructorDetails() {
-            System.out.println("Instructor name: " + name);
-            System.out.println("Instructor Qualification: " + qualification);
-        }
-
-    }
-
     public Course() {
         courseCode = "";
         title = "";
         creditHours = 0.0;
-        this.courseInstructor = new CourseInstructor();
+        courseInstructor = new CourseInstructor();
     }
 
-    public Course(String courseCode, String title, double creditHours) {
+    public Course(String courseCode, String title, double creditHours, CourseInstructor courseInstructor) {
         this.courseCode = courseCode;
         this.title = title;
         this.creditHours = creditHours;
-        this.courseInstructor = new CourseInstructor();
+        this.courseInstructor = courseInstructor;
         totalCourses++;
 
     }
@@ -197,7 +176,6 @@ class Course {
         System.out.println("Course Code: " + courseCode);
         System.out.println("Course Title: " + title);
         System.out.println("Credit Hours: " + creditHours);
-        courseInstructor.displayInstructorDetails();
 
     }
 
@@ -209,6 +187,51 @@ class Course {
                 ", creditHours='" + getCreditHours() + "'" +
                 "}";
     }
+}
+
+class CourseInstructor {
+    String name;
+    String qualification;
+
+    public CourseInstructor() {
+        name = "";
+        qualification = "";
+    }
+
+    public CourseInstructor(String name, String qualification) {
+        this.name = name;
+        this.qualification = qualification;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getQualification() {
+        return this.qualification;
+    }
+
+    public void setQualification(String qualification) {
+        this.qualification = qualification;
+    }
+
+    public void displayInstructorDetails() {
+        System.out.println("Instructor name: " + name);
+        System.out.println("Instructor Qualification: " + qualification);
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                " name='" + getName() + "'" +
+                ", qualification='" + getQualification() + "'" +
+                "}";
+    }
+
 }
 
 class ScienceStudent extends Student {
