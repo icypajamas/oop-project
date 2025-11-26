@@ -44,6 +44,7 @@ abstract class Student implements resultCalculator {
         this.studentID = studentID;
         this.name = name;
         this.program = program;
+        totalStudents++;
     }
 
     public Student() {
@@ -51,15 +52,13 @@ abstract class Student implements resultCalculator {
         name = "";
         program = "";
     }
-
-    public void addCourse() {
+    public void  addCourse(Course c){
 
     }
 
     public double calcGPA() {
-        double gpa = 0;
+        double gpa = transcript.getGPA();
         return gpa;
-
     }
 
     public void displayResult() {
@@ -75,14 +74,73 @@ interface resultCalculator {
 
 class Transcript {
     private List<resultEntry> results;
+    public List<resultEntry> getResults() {
+        return results;
+    }
+
+    public void setResults(List<resultEntry> results) {
+        this.results = results;
+    }
+
+    public Transcript(List<resultEntry> results) {
+        this.results = results;
+    }
+    public Transcript(){
+        results = new ArrayList<>();
+    }
+
+    @Override
+    public String toString() {
+        return "Transcript{" +
+                "results=" + results +
+                '}';
+    }
 
     public void addResultEntry(resultEntry r) {
         results.add(r);
-
     }
-    // public double getGPA(){
-    // public double getTotalMarks(){
-
+    public double getGPA(){
+        double points = 0;
+        double totalHours = 0;
+        for(resultEntry r:results) {
+            double creditHours = r.getCourse().getCreditHours();
+            double marks = r.getMarksObtained();
+            points += (creditHours * marksToGradePoints(marks));
+            totalHours += creditHours;
+        }if(totalHours != 0) {
+            double gpa = points / totalHours;
+            return gpa;
+        }else{
+            return -1;
+        }
+    }
+    public double marksToGradePoints(double marks){
+        if(marks >= 90){
+            return 4.0;
+        }
+        else if(marks >= 80){
+            return 3.7;
+        }
+        else if(marks >= 70){
+            return 3.0;
+        }
+        else if(marks >= 60){
+            return 2.0;
+        }
+        else if(marks >= 50){
+            return 1.0;
+        }
+        else{
+            return 0.0;
+        }
+    }
+    public double getTotalMarks() {
+        double totalMarks = 0;
+        for (resultEntry r : results) {
+            totalMarks += r.getMarksObtained();
+        }
+        return totalMarks;
+    }
 }
 
 class resultEntry {
@@ -94,7 +152,12 @@ class resultEntry {
     }
 
     public void setMarksObtained(double marksObtained) {
-        this.marksObtained = marksObtained;
+        if(marksObtained >0 && marksObtained <= 100) {
+            this.marksObtained = marksObtained;
+        }
+        else{
+            System.out.println("MARKS SHOULD BE IN THE RANGE OF 0 TO 100");
+        }
     }
 
     public Course getCourse() {
