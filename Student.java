@@ -80,14 +80,13 @@ abstract class Student implements resultCalculator {
 
     @Override
     public double calculatePercentage() {
-        double totalMarksObtained = transcript.getTotalMarks();
-        return ((totalMarksObtained / transcript.getResultCount())*100);
+        return calculateTotal()*100;
     }
 
     @Override
     public double calculateTotal() {
         double totalMarksObtained = transcript.getTotalMarks();
-        return (totalMarksObtained / transcript.getResultCount());
+        return (totalMarksObtained / (transcript.getResultCount()*100));
     }
 
     @Override
