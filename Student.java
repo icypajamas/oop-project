@@ -118,13 +118,21 @@ abstract class Student implements resultCalculator {
 }
 
 class ScienceStudent extends Student {
+    public ScienceStudent(){
+        super();
+    }
 
 }
 
 class ArtsStudent extends Student {
+    public ArtsStudent(){
+        super();
+    }
 
 }
 
 class EngineeringStudent extends Student {
+    public EngineeringStudent(){
 
+    }
 }
