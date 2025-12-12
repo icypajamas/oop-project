@@ -1,5 +1,7 @@
+import java.awt.*;
+import java.io.Serializable;
 
-class Course {
+class Course implements Serializable {
     private String courseCode;
     private String title;
     private double creditHours;
@@ -66,7 +68,7 @@ class Course {
 }
 
 // Composed by Course
-class CourseInstructor {
+class CourseInstructor implements Serializable{
     String name;
     String qualification;
 
@@ -97,6 +99,7 @@ class CourseInstructor {
     }
 
     public void displayInstructorDetails() {
+        System.out.println("-------INSTRUCTOR DETAILS-------");
         System.out.println("Instructor name: " + name);
         System.out.println("Instructor Qualification: " + qualification);
     }

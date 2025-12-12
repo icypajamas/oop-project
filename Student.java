@@ -1,3 +1,4 @@
+import java.io.Serializable;
 
 interface resultCalculator {
     double passMarks = 50;
@@ -8,11 +9,25 @@ interface resultCalculator {
 
 }
 
-abstract class Student implements resultCalculator {
+abstract class Student implements resultCalculator,Serializable {
     protected String studentID;
     protected String name;
     protected String program;
+
+    public static int getTotalStudents() {
+        System.out.println("------TOTAL STUDENTS-----");
+        return totalStudents;
+    }
     protected static int totalStudents;
+
+    public Transcript getTranscript() {
+        return transcript;
+    }
+
+    public void setTranscript(Transcript transcript) {
+        this.transcript = transcript;
+    }
+
     protected Transcript transcript;
 
     @Override
@@ -63,8 +78,11 @@ abstract class Student implements resultCalculator {
         transcript = new Transcript();
         totalStudents++;
     }
-    public void addCourse(Course c){
-
+    public void addCourse(Course c, double marksObtained){
+        System.out.println("------COURSE ADDITION-------");
+        ResultEntry r = new ResultEntry(marksObtained, c);
+        transcript.addResultEntry(r);
+        System.out.println("COURSE " + c.getTitle() + " WITH MARKS " + marksObtained + " ADDED" + " FOR STUDENT: "+ getName());
     }
 
     public double calculateGPA() {
@@ -72,10 +90,12 @@ abstract class Student implements resultCalculator {
     }
 
     public void displayResult() {
-        System.out.println("-------Bachay ke kartoot-------");
-        System.out.println("Total Obtained marks: " + calculateTotal());
-        System.out.println("Obtained Percentage: " + calculatePercentage());
-        System.out.println("Obtained Grade: " + calculateGrade());
+        System.out.println("-------DISPLAYING RESULT-------");
+        System.out.println("STUDENT ID: " + getStudentID());
+        System.out.printf("Total Obtained marks: %.2f%n", calculateTotal() * 100);
+        System.out.printf("Obtained Percentage: %.2f%n", calculatePercentage());
+        System.out.printf("Obtained Grade: %s%n", calculateGrade());
+        System.out.printf("GPA: %.2f%n", calculateGPA());
     }
 
     @Override
@@ -83,15 +103,15 @@ abstract class Student implements resultCalculator {
         return calculateTotal()*100;
     }
 
-    @Override
     public double calculateTotal() {
         double totalMarksObtained = transcript.getTotalMarks();
-        return (totalMarksObtained / (transcript.getResultCount()*100));
+        int numCourses = transcript.getResults().size();
+        return totalMarksObtained / (numCourses * 100);
     }
 
     @Override
     public String calculateGrade() {
-        double totalMarksObtained = calculateTotal();
+        double totalMarksObtained = calculateTotal() * 100;
         if(totalMarksObtained >= 85){
             return "A";
         } else if (totalMarksObtained >= 80) {
@@ -121,18 +141,25 @@ class ScienceStudent extends Student {
     public ScienceStudent(){
         super();
     }
-
+    public ScienceStudent(String studentID, String name, String program, Transcript transcript) {
+        super(studentID, name, program, transcript);
+    }
 }
 
 class ArtsStudent extends Student {
     public ArtsStudent(){
         super();
     }
-
+    public ArtsStudent(String studentID, String name, String program, Transcript transcript) {
+        super(studentID, name, program, transcript);
+    }
 }
 
 class EngineeringStudent extends Student {
     public EngineeringStudent(){
-
+        super();
+    }
+    public EngineeringStudent(String studentID, String name, String program, Transcript transcript) {
+        super(studentID, name, program, transcript);
     }
 }

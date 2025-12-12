@@ -1,10 +1,19 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 // Composed by Student
-class Transcript {
+class Transcript implements Serializable {
     private List<ResultEntry> results;
-    private static int resultCount = 0;
+    @Override
+    public String toString() {
+        return "Transcript{" +
+                "results=" + results +
+                '}';
+    }
+    public Transcript( List<ResultEntry> r) {
+        results = r;
+    }
 
     public List<ResultEntry> getResults() {
         return results;
@@ -12,30 +21,12 @@ class Transcript {
     public void setResults(List<ResultEntry> results) {
         this.results = results;
     }
-    public int getResultCount(){
-        return resultCount;
-    }
-    public void setResultCount(int resultCount){
-        Transcript.resultCount = resultCount;
-    }
-
-    public Transcript(List<ResultEntry> results) {
-        this.results = results;
-    }
     public Transcript(){
         results = new ArrayList<>();
     }
 
-    @Override
-    public String toString() {
-        return "Transcript{" +
-                "results=" + results +
-                '}';
-    }
-
     public void addResultEntry(ResultEntry result) {
         results.add(result);
-        resultCount++;
     }
 
     public double getGPA(){
@@ -85,7 +76,7 @@ class Transcript {
 }
 
 // Composed by Transcript
-class ResultEntry {
+class ResultEntry implements Serializable{
     private double marksObtained;
     private Course course;
 
