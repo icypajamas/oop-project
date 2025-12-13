@@ -52,6 +52,24 @@ public class RecordList<T> implements Serializable {
                 System.out.println("ID NOT FOUND");
             }
     }
+    public T search(String ID) {
+        System.out.println("------------SEARCHING--------------");
+        for (T item : items) {
+            if (item instanceof Student) {
+                if (((Student) item).getStudentID().equalsIgnoreCase(ID)) {
+                    System.out.println("FOUND");
+                    return item;
+                }
+            }
+            else if (item instanceof Course) {
+                if (((Course) item).getCourseCode().equalsIgnoreCase(ID)) {
+                    System.out.println("NOT FOUND");
+                    return item;
+                }
+            }
+        }
+        return null;
+    }
     public void getAll () {
         System.out.println("---------DISPLAYING RECORD LIST--------");
         for (T stuff : items) {

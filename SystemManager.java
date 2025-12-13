@@ -64,5 +64,7 @@ public class SystemManager {
         for (Student all : loadedStudents) {
                     System.out.println(all);
                 }
+        System.out.println(studentRecords.search("001"));
+        System.out.println(studentRecords.search("000"));
             }
         }
