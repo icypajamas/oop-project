@@ -1,3 +1,4 @@
+import java.io.Serializable;
 
 interface resultCalculator {
     double passMarks = 50;
@@ -8,7 +9,7 @@ interface resultCalculator {
 
 }
 
-abstract class Student implements resultCalculator {
+abstract class Student implements resultCalculator, Serializable{
     protected String studentID;
     protected String name;
     protected String program;
@@ -133,6 +134,6 @@ class ArtsStudent extends Student {
 
 class EngineeringStudent extends Student {
     public EngineeringStudent(){
-
+        super();
     }
 }

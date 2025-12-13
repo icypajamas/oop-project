@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 // Composed by Student
-class Transcript {
+class Transcript implements Serializable{
     private List<ResultEntry> results;
     private static int resultCount = 0;
 
@@ -85,7 +86,7 @@ class Transcript {
 }
 
 // Composed by Transcript
-class ResultEntry {
+class ResultEntry implements Serializable{
     private double marksObtained;
     private Course course;
 
