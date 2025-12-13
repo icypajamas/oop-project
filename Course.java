@@ -47,27 +47,23 @@ class Course implements Serializable {
         this.creditHours = creditHours;
     }
 
-    public void displayCourseDetails() {
-        System.out.println("-------Course Details-------");
-        System.out.println("Course Code: " + courseCode);
-        System.out.println("Course Title: " + title);
-        System.out.println("Credit Hours: " + creditHours);
-        courseInstructor.displayInstructorDetails();
+    public CourseInstructor getCourseInstructor() {
+        return courseInstructor;
     }
+
+    public void setCourseInstructor(CourseInstructor courseInstructor) {
+        this.courseInstructor = courseInstructor;
+    }
+
 
     @Override
     public String toString() {
-        return "Course{" +
-                "courseCode='" + courseCode + '\'' +
-                ", title='" + title + '\'' +
-                ", creditHours=" + creditHours +
-                ", courseInstructor=" + courseInstructor +
-                '}';
+        return courseCode + " - " + title + " (" + creditHours + " CH)" + " - " + getCourseInstructor().name;
     }
 }
 
 // Composed by Course
-class CourseInstructor implements Serializable{
+class CourseInstructor implements Serializable {
     String name;
     String qualification;
 
@@ -95,11 +91,6 @@ class CourseInstructor implements Serializable{
 
     public void setQualification(String qualification) {
         this.qualification = qualification;
-    }
-
-    public void displayInstructorDetails() {
-        System.out.println("Instructor name: " + name);
-        System.out.println("Instructor Qualification: " + qualification);
     }
 
     @Override

@@ -3,6 +3,7 @@ import java.io.*;
 
 public class DataStore <T extends  Serializable>{
     public void saveToFile(String fileName, List<T> items){
+        System.out.println("----------SAVING TO FILE-----------");
         try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName))){
             out.writeObject(items);
         } catch (IOException e) {
@@ -12,6 +13,7 @@ public class DataStore <T extends  Serializable>{
 
     public List<T> readFromFile(String fileName){
         List<T> items = new ArrayList<>();
+        System.out.println("----------READING FROM FILE----------");
         try(ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName))) {
             items = (List<T>) in.readObject();
 

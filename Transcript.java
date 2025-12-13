@@ -3,29 +3,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Composed by Student
-class Transcript implements Serializable{
+class Transcript implements Serializable {
     private List<ResultEntry> results;
-    private static int resultCount = 0;
-
-    public List<ResultEntry> getResults() {
-        return results;
-    }
-    public void setResults(List<ResultEntry> results) {
-        this.results = results;
-    }
-    public int getResultCount(){
-        return resultCount;
-    }
-    public void setResultCount(int resultCount){
-        Transcript.resultCount = resultCount;
-    }
-
-    public Transcript(List<ResultEntry> results) {
-        this.results = results;
-    }
-    public Transcript(){
-        results = new ArrayList<>();
-    }
 
     @Override
     public String toString() {
@@ -34,44 +13,55 @@ class Transcript implements Serializable{
                 '}';
     }
 
-    public void addResultEntry(ResultEntry result) {
-        results.add(result);
-        resultCount++;
+    public Transcript(List<ResultEntry> r) {
+        results = r;
     }
 
-    public double getGPA(){
+    public List<ResultEntry> getResults() {
+        return results;
+    }
+
+    public void setResults(List<ResultEntry> results) {
+        this.results = results;
+    }
+
+    public Transcript() {
+        results = new ArrayList<>();
+    }
+
+    public void addResultEntry(ResultEntry result) {
+        results.add(result);
+    }
+
+    public double getGPA() {
         double points = 0;
         double totalHours = 0;
-        for(ResultEntry result:results) {
+        for (ResultEntry result : results) {
             double creditHours = result.getCourse().getCreditHours();
             double marks = result.getMarksObtained();
             points += (creditHours * marksToGradePoints(marks));
             totalHours += creditHours;
-        }if(totalHours != 0) {
-            return(points / totalHours);
+        }
+        if (totalHours != 0) {
+            return (points / totalHours);
 
-        }else{
+        } else {
             return -1;
         }
     }
 
-    public double marksToGradePoints(double marks){
-        if(marks >= 90){
+    public double marksToGradePoints(double marks) {
+        if (marks >= 90) {
             return 4.0;
-        }
-        else if(marks >= 80){
+        } else if (marks >= 80) {
             return 3.7;
-        }
-        else if(marks >= 70){
+        } else if (marks >= 70) {
             return 3.0;
-        }
-        else if(marks >= 60){
+        } else if (marks >= 60) {
             return 2.0;
-        }
-        else if(marks >= 50){
+        } else if (marks >= 50) {
             return 1.0;
-        }
-        else{
+        } else {
             return 0.0;
         }
     }
@@ -83,10 +73,29 @@ class Transcript implements Serializable{
         }
         return totalMarks;
     }
+
+    public String toReportString() {
+        if (results.isEmpty()) {
+            return "No results available.";
+        }
+
+        StringBuilder text = new StringBuilder();
+        text.append("------ TRANSCRIPT ------\n\n");
+
+        for (ResultEntry result : results) {
+            text.append(result.courseString()).append("\n");
+        }
+
+        text.append("\n------------------------\n");
+        text.append(String.format("GPA: %.2f%n", getGPA()));
+        text.append(String.format("Total Marks: %.2f%n", getTotalMarks()));
+
+        return text.toString();
+    }
 }
 
 // Composed by Transcript
-class ResultEntry implements Serializable{
+class ResultEntry implements Serializable {
     private double marksObtained;
     private Course course;
 
@@ -95,12 +104,7 @@ class ResultEntry implements Serializable{
     }
 
     public void setMarksObtained(double marksObtained) {
-        if(marksObtained >= 0 && marksObtained <= 100) {
-            this.marksObtained = marksObtained;
-        }
-        else{
-            System.out.println("MARKS SHOULD BE IN THE RANGE OF 0 TO 100");
-        }
+        this.marksObtained = marksObtained;
     }
 
     public Course getCourse() {
@@ -119,6 +123,13 @@ class ResultEntry implements Serializable{
     public ResultEntry() {
         marksObtained = 0;
         course = new Course();
+    }
+
+    public String courseString() {
+        return course.getCourseCode() + " - " +
+                course.getTitle() +
+                " (" + course.getCreditHours() + " CH): " +
+                marksObtained + "/100";
     }
 
     @Override
