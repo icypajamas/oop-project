@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
 public class SystemManager {
 
     private RecordList<Student> students;
@@ -18,6 +16,8 @@ public class SystemManager {
         courseStore = new DataStore<>();
 
         loadData();
+        Student.totalStudents = students.getItems().size();
+        Course.totalCourses = courses.getItems().size();
     }
 
     public RecordList getStudents() {
@@ -92,6 +92,36 @@ public class SystemManager {
             return false;
     }
 
+    public int totalPassingStudents() {
+        ArrayList<Student> array = students.getItems();
+        int passCount = 0;
+        for (Student s : array) {
+            if (!s.calculateGrade().equals("F")) {
+                passCount++;
+            }
+        }
+        return passCount;
+    }
+
+    public int totalFailStudents() {
+        ArrayList<Student> array = students.getItems();
+        int failCount = 0;
+        for (Student s : array) {
+            if (s.calculateGrade().equals("F")) {
+                failCount++;
+            }
+        }
+        return failCount;
+    }
+
+    public double passStudentPercentage() {
+        int total = totalFailStudents() + totalPassingStudents();
+        if (total == 0.0)
+            return 0.0;
+        double percentage = ((double) totalPassingStudents() / total) * 100;
+        return Math.round(percentage * 100.0) / 100.0;
+    }
+
     public void assignInstructor(Course course, CourseInstructor instructor) {
         course.setCourseInstructor(instructor);
         saveData();
@@ -113,89 +143,3 @@ public class SystemManager {
     }
 
 }
-
-/*
- * import java.util.*;
- * import java.io.*;
- * 
- * public class SystemManager {
- * public static void main(String[] args) {
- * // COURSE INSTRUCTORS
- * CourseInstructor first = new CourseInstructor("abc", "phd");
- * CourseInstructor second = new CourseInstructor("def", "MS");
- * CourseInstructor third = new CourseInstructor("ghi", "BS");
- * CourseInstructor fourth = new CourseInstructor("jkl", "MS");
- * CourseInstructor fifth = new CourseInstructor("mno", "phd");
- * CourseInstructor sixth = new CourseInstructor("pqr", "MS");
- * // COURSES
- * Course one = new Course("101", "PF", 3, first);
- * Course two = new Course("102", "OOP", 3, second);
- * Course three = new Course("103", "ML", 3, third);
- * Course four = new Course("104", "DISCRETE", 3, fourth);
- * Course five = new Course("105", "MATHS", 2, fifth);
- * Course six = new Course("106", "CALCULUS", 3, sixth);
- * // RESULT ENTRY
- * ResultEntry r1 = new ResultEntry(98, one);
- * ResultEntry r2 = new ResultEntry(90, two);
- * ResultEntry r3 = new ResultEntry(89, three);
- * ResultEntry r4 = new ResultEntry(95, four);
- * ResultEntry r5 = new ResultEntry(100, five);
- * ResultEntry r6 = new ResultEntry(99, six);
- * ArrayList<ResultEntry> r = new ArrayList<>(3);
- * r.add(r1);
- * r.add(r2);
- * r.add(r3);
- * ArrayList<ResultEntry> rr = new ArrayList<>(3);
- * rr.add(r4);
- * rr.add(r5);
- * rr.add(r6);
- * // TRANSCRIPT
- * Transcript t1 = new Transcript(r);
- * Transcript t2 = new Transcript(rr);
- * Transcript[] t = { t1, t2 };
- * // STUDENT
- * Student[] s = new Student[3];
- * s[0] = new ScienceStudent("01", "ABC", "CS", t1);
- * s[1] = new EngineeringStudent("21", "DEF", "EE", t2);
- * s[2] = new ArtsStudent("31", "jdd", "psychology", t1);
- * for (int i = 0; i < 3; i++) {
- * s[i].displayResult();
- * }
- * s[0].addCourse(four, 95);
- * s[0].displayResult();
- * System.out.println(Student.getTotalStudents());
- * one.displayCourseDetails();
- * t1.getGPA();
- * RecordList<Student> studentRecords = new RecordList<>(new ArrayList<>());
- * for (int i = 0; i < 3; i++) {
- * studentRecords.add(s[i]);
- * }
- * // COURSE
- * Course[] c = new Course[3];
- * c[0] = one;
- * c[1] = two;
- * c[2] = three;
- * RecordList<Course> courseRecords = new RecordList<>(new ArrayList<>());
- * for (int i = 0; i < 3; i++) {
- * courseRecords.add(c[i]);
- * }
- * studentRecords.add(new EngineeringStudent("001", "kjg", "EE", t2));
- * studentRecords.remove("21");
- * studentRecords.getAll();
- * DataStore<Student> studentStore = new DataStore<>();
- * DataStore<Course> courseStore = new DataStore<>();
- * courseStore.saveToFile("courses.dat", courseRecords.getItems());
- * System.out.println("COURSES SAVED.");
- * studentStore.saveToFile("students.dat", studentRecords.getItems());
- * System.out.println("STUDENTS SAVED.");
- * List<Student> loadedStudents = studentStore.readFromFile("students.dat");
- * List<Course> loadedCourses = courseStore.readFromFile("courses.dat");
- * System.out.println("LOADED STUDENTS");
- * for (Student all : loadedStudents) {
- * System.out.println(all);
- * }
- * System.out.println(studentRecords.search("001"));
- * System.out.println(studentRecords.search("000"));
- * }
- * }
- */

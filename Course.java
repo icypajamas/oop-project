@@ -27,6 +27,10 @@ class Course implements Serializable {
         return this.courseCode;
     }
 
+    public static int getTotalCourses(){
+        return totalCourses;
+    }
+
     public void setCourseCode(String courseCode) {
         this.courseCode = courseCode;
     }

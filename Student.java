@@ -15,12 +15,12 @@ abstract class Student implements resultCalculator, Serializable {
     protected String studentID;
     protected String name;
     protected String program;
+    protected static int totalStudents;
+    protected Transcript transcript;
 
     public static int getTotalStudents() {
         return totalStudents;
     }
-
-    protected static int totalStudents;
 
     public Transcript getTranscript() {
         return transcript;
@@ -29,8 +29,6 @@ abstract class Student implements resultCalculator, Serializable {
     public void setTranscript(Transcript transcript) {
         this.transcript = transcript;
     }
-
-    protected Transcript transcript;
 
     @Override
     public String toString() {
@@ -90,11 +88,8 @@ abstract class Student implements resultCalculator, Serializable {
     }
 
     public void addCourse(Course c, double marksObtained) {
-        System.out.println("------COURSE ADDITION-------");
         ResultEntry r = new ResultEntry(marksObtained, c);
         transcript.addResultEntry(r);
-        System.out.println(
-                "COURSE " + c.getTitle() + " WITH MARKS " + marksObtained + " ADDED" + " FOR STUDENT: " + getName());
     }
 
     public double calculateGPA() {
@@ -108,7 +103,8 @@ abstract class Student implements resultCalculator, Serializable {
         text.append("Name: ").append(getName()).append("\n\n");
         return text.toString();
     }
-    public String toReportString(){
+
+    public String toReportString() {
         StringBuilder text = new StringBuilder();
         text.append("Percentage: ").append(calculatePercentage()).append("\n");
         text.append("Grade: ").append(calculateGrade()).append("\n");

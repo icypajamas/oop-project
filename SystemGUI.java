@@ -166,6 +166,8 @@ public class SystemGUI extends JFrame {
         JPanel buttonPanel = new JPanel();
         JButton back = new JButton("Back");
         JButton next = new JButton("Next");
+        back.setFocusable(false);
+        next.setFocusable(false);
         back.addActionListener(e -> {
             card.show(mainPanel, "StudentManage");
         });
@@ -216,8 +218,13 @@ public class SystemGUI extends JFrame {
                     return;
             }
             system.addStudent(student);
-            JOptionPane.showMessageDialog(cover, "Student added successfully", "Success",
-                    JOptionPane.INFORMATION_MESSAGE);
+            int choice = JOptionPane.showConfirmDialog(this,
+                    "Student added successfully\nWould you like to add a Result Entry?", "Success",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (choice == JOptionPane.YES_OPTION) {
+                card.show(mainPanel, "RecordResult");
+            }
 
         });
         buttonPanel.add(back);
@@ -250,10 +257,12 @@ public class SystemGUI extends JFrame {
         // Buttons
         JPanel buttonPanel = new JPanel();
         JButton back = new JButton("Back");
+        back.setFocusable(false);
         back.addActionListener(e -> {
             card.show(mainPanel, "StudentManage");
         });
         JButton delete = new JButton("Delete");
+        delete.setFocusable(false);
         delete.addActionListener(e -> {
             if (system.deleteStudent(idField.getText())) {
                 JOptionPane.showMessageDialog(cover, "Student Deleted Successfully", "RIP",
@@ -294,6 +303,8 @@ public class SystemGUI extends JFrame {
         JPanel buttonPanel = new JPanel();
         JButton back = new JButton("Back");
         JButton update = new JButton("Update Table");
+        back.setFocusable(false);
+        update.setFocusable(false);
         update.addActionListener(e -> {
             loadStudentTableData(model);
         });
@@ -320,19 +331,23 @@ public class SystemGUI extends JFrame {
         JPanel centerButtons = new JPanel(new GridLayout(4, 1));
         centerButtons.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         JButton addCourseButton = new JButton("Add Course");
+        addCourseButton.setFocusable(false);
         addCourseButton.addActionListener(e -> {
             card.show(mainPanel, "AddCourse");
         });
         JButton assignCourseButton = new JButton("Assign Course - Instructor");
+        assignCourseButton.setFocusable(false);
         assignCourseButton.addActionListener(e -> {
             refreshCourseCombo(courseList);
             card.show(mainPanel, "AssignCourse");
         });
         JButton deleteCourseButton = new JButton("Delete Course");
+        deleteCourseButton.setFocusable(false);
         deleteCourseButton.addActionListener(e -> {
             card.show(mainPanel, "DeleteCourse");
         });
         JButton allCoursesButton = new JButton("View All Courses");
+        allCoursesButton.setFocusable(false);
         allCoursesButton.addActionListener(e -> {
             card.show(mainPanel, "ViewAllCourse");
         });
@@ -345,6 +360,7 @@ public class SystemGUI extends JFrame {
         // Buttons
         JPanel buttonPanel = new JPanel();
         JButton back = new JButton("Back");
+        back.setFocusable(false);
         back.addActionListener(e -> {
             goBacktoMenu();
         });
@@ -392,6 +408,8 @@ public class SystemGUI extends JFrame {
         JPanel buttonPanel = new JPanel();
         JButton back = new JButton("Back");
         JButton addButton = new JButton("Add Course");
+        back.setFocusable(false);
+        addButton.setFocusable(false);
         back.addActionListener(e -> {
             card.show(mainPanel, "CourseManage");
         });
@@ -478,6 +496,8 @@ public class SystemGUI extends JFrame {
         JPanel buttonPanel = new JPanel();
         JButton back = new JButton("Back");
         JButton assign = new JButton("Assign");
+        back.setFocusable(false);
+        assign.setFocusable(false);
         back.addActionListener(e -> {
             card.show(mainPanel, "CourseManage");
         });
@@ -532,6 +552,8 @@ public class SystemGUI extends JFrame {
         JPanel buttonPanel = new JPanel();
         JButton back = new JButton("Back");
         JButton delete = new JButton("Delete");
+        back.setFocusable(false);
+        delete.setFocusable(false);
         delete.addActionListener(e -> {
             if (system.deleteCourse(courseField.getText().trim())) {
                 JOptionPane.showMessageDialog(cover, "Course deleted successfully", "Success",
@@ -577,6 +599,8 @@ public class SystemGUI extends JFrame {
         JPanel buttonPanel = new JPanel();
         JButton back = new JButton("Back");
         JButton update = new JButton("Update Table");
+        update.setFocusable(false);
+        back.setFocusable(false);
         update.addActionListener(e -> {
             loadCourseTableData(model);
         });
@@ -602,10 +626,12 @@ public class SystemGUI extends JFrame {
         // Option Buttons
         JPanel optionPanel = new JPanel();
         JButton optionStudent = new JButton("View by Student");
+        optionStudent.setFocusable(false);
         optionStudent.addActionListener(e -> {
             card.show(mainPanel, "ViewReportStudent");
         });
         JButton optionCourse = new JButton("View by Course");
+        optionCourse.setFocusable(false);
         optionCourse.addActionListener(e -> {
             card.show(mainPanel, "ViewReportCourse");
         });
@@ -616,6 +642,7 @@ public class SystemGUI extends JFrame {
         // Buttons
         JPanel buttonPanel = new JPanel();
         JButton back = new JButton("Back");
+        back.setFocusable(false);
         back.addActionListener(e -> {
             goBacktoMenu();
         });
@@ -647,6 +674,8 @@ public class SystemGUI extends JFrame {
         JPanel buttonPanel = new JPanel();
         JButton back = new JButton("Back");
         JButton viewButton = new JButton("View Report");
+        back.setFocusable(false);
+        viewButton.setFocusable(false);
         viewButton.addActionListener(e -> {
             String id = idField.getText().trim();
             if (isValidID(id)) {
@@ -680,16 +709,31 @@ public class SystemGUI extends JFrame {
         cover.add(titlePanel, BorderLayout.NORTH);
 
         // Fields
-        JPanel fields = new JPanel(new GridLayout(1, 2));
-        JLabel codeLabel = new JLabel("Enter Course Code:");
-        fields.add(codeLabel);
-        JTextField codeField = new JTextField(10);
-        fields.add(codeField);
-        cover.add(fields, BorderLayout.CENTER);
+        JPanel centerPanel = new JPanel(new GridLayout(3, 1, 20, 80));
+        courseList = new JComboBox<>();
+        ArrayList<Course> courseArray = system.getCourses().getItems();
+        for (Course course : courseArray) {
+            courseList.addItem(course);
+        }
+        String[] columns = { "StudentID", "Name", "Obtained Marks", "GPA", "Grade", };
+        DefaultTableModel model = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        JTable courseTable = new JTable(model);
+        JScrollPane scrollPane = new JScrollPane(courseTable);
+        Course selectedCourse = (Course) courseList.getSelectedItem();
+        loadCourseReportData(model, selectedCourse);
+        centerPanel.add(courseList);
+        centerPanel.add(scrollPane);
+        cover.add(centerPanel, BorderLayout.CENTER);
 
         // Buttons
         JPanel buttonPanel = new JPanel();
         JButton back = new JButton("Back");
+        back.setFocusable(false);
         back.addActionListener(e -> {
             card.show(mainPanel, "ViewReport");
         });
@@ -708,9 +752,24 @@ public class SystemGUI extends JFrame {
         JPanel titlePanel = createTitlePanel("Global Statistics");
         cover.add(titlePanel, BorderLayout.NORTH);
 
+        // Central Panel
+        JPanel centerPanel = new JPanel(new GridLayout(5, 1, 5, 5));
+        JLabel totalStudents = new JLabel("Total Students: " + Student.getTotalStudents());
+        JLabel totalPassStudents = new JLabel("Passing Students: " + system.totalPassingStudents());
+        JLabel totalFailStudents = new JLabel("Fail Students: " + system.totalFailStudents());
+        JLabel passFailRatio = new JLabel("Percentage of Passing Students: " + system.totalPassingStudents() + "%");
+        JLabel totalCourses = new JLabel("Total Courses: " + Course.getTotalCourses());
+        JLabel[] labelArray = { totalStudents, totalPassStudents, totalFailStudents, passFailRatio, totalCourses };
+        for (JLabel label : labelArray) {
+            label.setHorizontalAlignment(SwingConstants.LEFT);
+            centerPanel.add(label);
+        }
+        cover.add(centerPanel, BorderLayout.CENTER);
+
         // Buttons
         JPanel buttonPanel = new JPanel();
         JButton back = new JButton("Back");
+        back.setFocusable(false);
         back.addActionListener(e -> {
             goBacktoMenu();
         });
@@ -753,6 +812,8 @@ public class SystemGUI extends JFrame {
         JPanel buttonPanel = new JPanel();
         JButton back = new JButton("Back");
         JButton addButton = new JButton("Add Entry");
+        addButton.setFocusable(false);
+        back.setFocusable(false);
         addButton.addActionListener(e -> {
             StringBuilder errors = new StringBuilder();
             if (!isValidID(idField.getText().trim())) {
@@ -898,6 +959,30 @@ public class SystemGUI extends JFrame {
             });
         }
 
+    }
+
+    private void loadCourseReportData(DefaultTableModel model, Course selectedCourse) {
+        model.setRowCount(0);
+
+        ArrayList<Student> students = system.getStudents().getItems();
+
+        for (Student student : students) {
+            Transcript transcript = student.getTranscript();
+            for (ResultEntry result : transcript.getResults()) {
+                if (result.getCourse().getCourseCode().equals(selectedCourse.getCourseCode())) {
+                    double marks = result.getMarksObtained();
+                    double gpa = transcript.marksToGradePoints(marks);
+                    String grade = student.calculateGrade();
+                    model.addRow(new Object[] {
+                            student.getStudentID(),
+                            student.getName(),
+                            marks,
+                            gpa,
+                            grade
+                    });
+                }
+            }
+        }
     }
 
     private JPanel createTitlePanel(String t) {

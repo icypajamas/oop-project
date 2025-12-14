@@ -26,7 +26,6 @@ public class RecordList<T> implements Serializable {
     }
 
     public void remove(String id) {
-        System.out.println("------REMOVING AN ITEM------");
         boolean found = false;
         for (int i = 0; i < items.size(); i++) {
             T item = items.get(i);
@@ -35,7 +34,6 @@ public class RecordList<T> implements Serializable {
                     Student s = (Student) item;
                     items.remove(i);
                     found = true;
-                    System.out.println("STUDENT REMOVED");
                     break;
                 }
             } else if (item instanceof Course) {
@@ -43,27 +41,20 @@ public class RecordList<T> implements Serializable {
                     Course s = (Course) item;
                     items.remove(i);
                     found = true;
-                    System.out.println("COURSE REMOVED");
                     break;
                 }
             }
         }
-            if (!found) {
-                System.out.println("ID NOT FOUND");
-            }
     }
     public T search(String ID) {
-        System.out.println("------------SEARCHING--------------");
         for (T item : items) {
             if (item instanceof Student) {
                 if (((Student) item).getStudentID().equalsIgnoreCase(ID)) {
-                    System.out.println("FOUND");
                     return item;
                 }
             }
             else if (item instanceof Course) {
                 if (((Course) item).getCourseCode().equalsIgnoreCase(ID)) {
-                    System.out.println("NOT FOUND");
                     return item;
                 }
             }
