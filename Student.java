@@ -101,15 +101,17 @@ abstract class Student implements resultCalculator, Serializable {
         return transcript.getGPA();
     }
 
-    public String getResultString() {
+    public String getStudentString() {
         StringBuilder text = new StringBuilder();
         text.append("------- STUDENT RESULT -------\n");
         text.append("Student ID: ").append(getStudentID()).append("\n");
         text.append("Name: ").append(getName()).append("\n\n");
-        text.append(String.format("Total Obtained Marks: %.2f%n", calculateTotal() * 100));
-        text.append(String.format("Obtained Percentage: %.2f%n", calculatePercentage()));
-        text.append("Obtained Grade: ").append(calculateGrade()).append("\n");
-        text.append(String.format("GPA: %.2f%n", calculateGPA()));
+        return text.toString();
+    }
+    public String toReportString(){
+        StringBuilder text = new StringBuilder();
+        text.append("Percentage: ").append(calculatePercentage()).append("\n");
+        text.append("Grade: ").append(calculateGrade()).append("\n");
         return text.toString();
     }
 

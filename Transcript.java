@@ -74,21 +74,27 @@ class Transcript implements Serializable {
         return totalMarks;
     }
 
-    public String toReportString() {
+    public String transcriptInfo() {
         if (results.isEmpty()) {
             return "No results available.";
         }
         StringBuilder text = new StringBuilder();
-        text.append("------ TRANSCRIPT ------\n\n");
+        text.append("------ TRANSCRIPT ------\n");
 
         for (ResultEntry result : results) {
-            text.append(result.courseString()).append("\n");
+            text.append(result.courseString()).append("\n\n");
         }
 
-        text.append("\n------------------------\n");
+        return text.toString();
+    }
+    public String toReportString(){
+        StringBuilder text = new StringBuilder();
         text.append(String.format("GPA: %.2f%n", getGPA()));
-        text.append(String.format("Total Marks: %.2f%n", getTotalMarks()));
-
+        return text.toString();
+    }
+    public String totalMarks(){
+        StringBuilder text = new StringBuilder();
+        text.append(String.format("Obtained Marks: %.2f%n", getTotalMarks()));
         return text.toString();
     }
 }
