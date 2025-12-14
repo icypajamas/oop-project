@@ -48,9 +48,7 @@ public class SystemManager {
             return "No transcript found for this student.";
         }
         StringBuilder report = new StringBuilder();
-        report.append("Student ID: ").append(student.getStudentID()).append("\n");
-        report.append("Name: ").append(student.getName()).append("\n\n");
-
+        report.append(student.getResultString());
         report.append(transcript.toReportString());
 
         return report.toString();

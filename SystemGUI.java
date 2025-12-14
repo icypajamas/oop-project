@@ -662,8 +662,8 @@ public class SystemGUI extends JFrame {
         back.addActionListener(e -> {
             card.show(mainPanel, "ViewReport");
         });
-        buttonPanel.add(viewButton);
         buttonPanel.add(back);
+        buttonPanel.add(viewButton);
         cover.add(buttonPanel, BorderLayout.SOUTH);
 
         return cover;

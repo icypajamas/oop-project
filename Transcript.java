@@ -78,7 +78,6 @@ class Transcript implements Serializable {
         if (results.isEmpty()) {
             return "No results available.";
         }
-
         StringBuilder text = new StringBuilder();
         text.append("------ TRANSCRIPT ------\n\n");
 
