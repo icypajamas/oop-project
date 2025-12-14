@@ -1,5 +1,7 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -169,6 +171,9 @@ public class SystemGUI extends JFrame {
         back.setFocusable(false);
         next.setFocusable(false);
         back.addActionListener(e -> {
+            idField.setText("");
+            nameField.setText("");
+            programField.setText("");
             card.show(mainPanel, "StudentManage");
         });
         next.addActionListener(e -> {
@@ -196,7 +201,7 @@ public class SystemGUI extends JFrame {
             String program = programField.getText().trim();
             String type = (String) typeList.getSelectedItem();
             if (system.getStudents().search(id) != null) {
-                JOptionPane.showMessageDialog(cover, "Student already exists", "Error",
+                JOptionPane.showMessageDialog(cover, "Student ID already exists", "Error",
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -217,6 +222,9 @@ public class SystemGUI extends JFrame {
                 default:
                     return;
             }
+            idField.setText("");
+            nameField.setText("");
+            programField.setText("");
             system.addStudent(student);
             int choice = JOptionPane.showConfirmDialog(this,
                     "Student added successfully\nWould you like to add a Result Entry?", "Success",
@@ -259,6 +267,7 @@ public class SystemGUI extends JFrame {
         JButton back = new JButton("Back");
         back.setFocusable(false);
         back.addActionListener(e -> {
+            idField.setText("");
             card.show(mainPanel, "StudentManage");
         });
         JButton delete = new JButton("Delete");
@@ -269,7 +278,10 @@ public class SystemGUI extends JFrame {
                         JOptionPane.INFORMATION_MESSAGE);
             } else
                 JOptionPane.showMessageDialog(cover, "Student does not exist", "Error", JOptionPane.ERROR_MESSAGE);
+
+            idField.setText("");
         });
+
         buttonPanel.add(back);
         buttonPanel.add(delete);
         cover.add(buttonPanel, BorderLayout.SOUTH);
@@ -295,6 +307,8 @@ public class SystemGUI extends JFrame {
             }
         };
         JTable studentTable = new JTable(model);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        studentTable.setRowSorter(sorter);
         JScrollPane scrollPane = new JScrollPane(studentTable);
         loadStudentTableData(model);
         cover.add(scrollPane, BorderLayout.CENTER);
@@ -411,9 +425,15 @@ public class SystemGUI extends JFrame {
         back.setFocusable(false);
         addButton.setFocusable(false);
         back.addActionListener(e -> {
+            codeField.setText("");
+            courseField.setText("");
+            chField.setText("");
+            instructorField.setText("");
+            qualField.setText("");
             card.show(mainPanel, "CourseManage");
         });
         addButton.addActionListener(e -> {
+
             if (system.getCourses().search(codeField.getText().trim()) != null) {
                 JOptionPane.showMessageDialog(cover, "Course Code already exists", "Error",
                         JOptionPane.ERROR_MESSAGE);
@@ -432,9 +452,8 @@ public class SystemGUI extends JFrame {
             if (!isValidInstructorName(instructorField.getText())) {
                 errors.append("- Invalid Instructor Name\n");
             }
-            int ch = Integer.parseInt(chField.getText());
-            if (ch <= 0) {
-                errors.append("- Credit hours must be positive\n");
+            if (!isOnlyNum(chField.getText())) {
+                errors.append("- Invalid Credit Hours\n- Credit hours must be positive\n");
             }
             if (!isValidQualification(qualField.getText())) {
                 errors.append("- Invalid Qualification");
@@ -450,11 +469,18 @@ public class SystemGUI extends JFrame {
             CourseInstructor instructor = new CourseInstructor(name, qualification);
             String code = codeField.getText().trim();
             String title = courseField.getText().trim();
+            int ch = Integer.parseInt(chField.getText());
             Course course = new Course(code, title, ch, instructor);
             system.addCourse(course);
             JOptionPane.showMessageDialog(cover, "Course added successfully", "Success",
                     JOptionPane.INFORMATION_MESSAGE);
+            codeField.setText("");
+            courseField.setText("");
+            chField.setText("");
+            instructorField.setText("");
+            qualField.setText("");
         });
+
         buttonPanel.add(back);
         buttonPanel.add(addButton);
         cover.add(buttonPanel, BorderLayout.SOUTH);
@@ -499,9 +525,22 @@ public class SystemGUI extends JFrame {
         back.setFocusable(false);
         assign.setFocusable(false);
         back.addActionListener(e -> {
+            instructorField.setText("");
+            qualField.setText("");
             card.show(mainPanel, "CourseManage");
         });
+
         assign.addActionListener(e -> {
+            Course selectedCourse = (Course) courseList.getSelectedItem();
+            if (courseList.getItemCount() == 0) {
+                JOptionPane.showMessageDialog(
+                        cover,
+                        "No courses available.\nPlease add a course first.",
+                        "No Courses",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
             StringBuilder errors = new StringBuilder();
             if (!isValidInstructorName(instructorField.getText())) {
                 errors.append("- Invalid Instructor Name\n");
@@ -518,11 +557,12 @@ public class SystemGUI extends JFrame {
             String name = instructorField.getText().trim();
             String qualification = qualField.getText().trim();
             CourseInstructor instructor = new CourseInstructor(name, qualification);
-            Course selectedCourse = (Course) courseList.getSelectedItem();
             system.assignInstructor(selectedCourse, instructor);
             JOptionPane.showMessageDialog(cover, "Course assigned to instructor successfully", "Success",
                     JOptionPane.INFORMATION_MESSAGE);
         });
+        instructorField.setText("");
+        qualField.setText("");
         buttonPanel.add(back);
         buttonPanel.add(assign);
         cover.add(buttonPanel, BorderLayout.SOUTH);
@@ -563,6 +603,7 @@ public class SystemGUI extends JFrame {
 
         });
         back.addActionListener(e -> {
+            courseField.setText("");
             card.show(mainPanel, "CourseManage");
         });
         buttonPanel.add(back);
@@ -591,6 +632,8 @@ public class SystemGUI extends JFrame {
             }
         };
         JTable courseTable = new JTable(model);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        courseTable.setRowSorter(sorter);
         JScrollPane scrollPane = new JScrollPane(courseTable);
         loadCourseTableData(model);
         cover.add(scrollPane, BorderLayout.CENTER);
@@ -633,6 +676,7 @@ public class SystemGUI extends JFrame {
         JButton optionCourse = new JButton("View by Course");
         optionCourse.setFocusable(false);
         optionCourse.addActionListener(e -> {
+            refreshCourseCombo(courseList);
             card.show(mainPanel, "ViewReportCourse");
         });
         optionPanel.add(optionStudent);
@@ -687,8 +731,10 @@ public class SystemGUI extends JFrame {
                     JOptionPane.showMessageDialog(cover, "Student not found", "Error", JOptionPane.ERROR_MESSAGE);
             } else
                 JOptionPane.showMessageDialog(cover, "Please enter a Valid ID", "Error", JOptionPane.ERROR_MESSAGE);
+            idField.setText("");
         });
         back.addActionListener(e -> {
+            idField.setText("");
             card.show(mainPanel, "ViewReport");
         });
         buttonPanel.add(back);
@@ -698,24 +744,32 @@ public class SystemGUI extends JFrame {
         return cover;
     }
 
-    // VIEW REPORT BY COURSE
+    // VIEW REPORT COURSE PANEL
 
     public JPanel createViewReportCoursesPanel() {
         JPanel cover = new JPanel(new BorderLayout());
         cover.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 
         // Title Panel
-        JPanel titlePanel = createTitlePanel("View Report");
+        JPanel titlePanel = createTitlePanel("View Report by Course Code");
         cover.add(titlePanel, BorderLayout.NORTH);
 
-        // Fields
-        JPanel centerPanel = new JPanel(new GridLayout(3, 1, 20, 80));
-        courseList = new JComboBox<>();
-        ArrayList<Course> courseArray = system.getCourses().getItems();
-        for (Course course : courseArray) {
-            courseList.addItem(course);
-        }
-        String[] columns = { "StudentID", "Name", "Obtained Marks", "GPA", "Grade", };
+        // Center Panel
+        JPanel centerPanel = new JPanel(new BorderLayout(0, 20));
+
+        // Search Panel
+        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JLabel searchLabel = new JLabel("Enter Course Code: ");
+        JTextField courseCodeField = new JTextField(10);
+        JButton searchButton = new JButton("Search");
+        searchPanel.add(searchLabel);
+        searchPanel.add(courseCodeField);
+        searchPanel.add(searchButton);
+
+        centerPanel.add(searchPanel, BorderLayout.NORTH);
+
+        // Table
+        String[] columns = { "StudentID", "Name", "Obtained Marks", "GPA", "Grade" };
         DefaultTableModel model = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -724,21 +778,40 @@ public class SystemGUI extends JFrame {
         };
         JTable courseTable = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(courseTable);
-        Course selectedCourse = (Course) courseList.getSelectedItem();
-        loadCourseReportData(model, selectedCourse);
-        centerPanel.add(courseList);
-        centerPanel.add(scrollPane);
+        centerPanel.add(scrollPane, BorderLayout.CENTER);
+
         cover.add(centerPanel, BorderLayout.CENTER);
 
-        // Buttons
+        // Buttons Panel
         JPanel buttonPanel = new JPanel();
         JButton back = new JButton("Back");
         back.setFocusable(false);
-        back.addActionListener(e -> {
-            card.show(mainPanel, "ViewReport");
-        });
+        back.addActionListener(e -> card.show(mainPanel, "ViewReport"));
         buttonPanel.add(back);
         cover.add(buttonPanel, BorderLayout.SOUTH);
+
+        // Search action
+        searchButton.setFocusable(false);
+        searchButton.addActionListener(e -> {
+            String code = courseCodeField.getText().trim();
+            model.setRowCount(0); 
+            if (!code.isEmpty()) {
+                Course found = null;
+                ArrayList<Course> courses = system.getCourses().getItems();
+                for (Course c : courses) {
+                    if (c.getCourseCode().equalsIgnoreCase(code)) {
+                        found = c;
+                        break;
+                    }
+                }
+                if (found != null) {
+                    loadCourseReportData(model, found);
+                } else {
+                    JOptionPane.showMessageDialog(cover, "Course not found!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
         return cover;
     }
 
@@ -757,7 +830,7 @@ public class SystemGUI extends JFrame {
         JLabel totalStudents = new JLabel("Total Students: " + Student.getTotalStudents());
         JLabel totalPassStudents = new JLabel("Passing Students: " + system.totalPassingStudents());
         JLabel totalFailStudents = new JLabel("Fail Students: " + system.totalFailStudents());
-        JLabel passFailRatio = new JLabel("Percentage of Passing Students: " + system.totalPassingStudents() + "%");
+        JLabel passFailRatio = new JLabel("Percentage of Passing Students: " + system.passStudentPercentage() + "%");
         JLabel totalCourses = new JLabel("Total Courses: " + Course.getTotalCourses());
         JLabel[] labelArray = { totalStudents, totalPassStudents, totalFailStudents, passFailRatio, totalCourses };
         for (JLabel label : labelArray) {
@@ -853,8 +926,12 @@ public class SystemGUI extends JFrame {
             system.saveData();
             JOptionPane.showMessageDialog(cover, "Result added successfully", "Success",
                     JOptionPane.INFORMATION_MESSAGE);
+            idField.setText("");
+            markField.setText("");
         });
         back.addActionListener(e -> {
+            idField.setText("");
+            markField.setText("");
             goBacktoMenu();
         });
         buttonPanel.add(back);

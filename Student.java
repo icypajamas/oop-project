@@ -106,7 +106,7 @@ abstract class Student implements resultCalculator, Serializable {
 
     public String toReportString() {
         StringBuilder text = new StringBuilder();
-        text.append("Percentage: ").append(calculatePercentage()).append("\n");
+        text.append(String.format("Percentage: %.2f%%\n", calculatePercentage()));
         text.append("Grade: ").append(calculateGrade()).append("\n");
         return text.toString();
     }

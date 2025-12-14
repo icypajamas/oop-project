@@ -76,13 +76,14 @@ class Transcript implements Serializable {
 
     public String transcriptInfo() {
         if (results.isEmpty()) {
-            return "No results available.";
+            return "No results available\n";
         }
         StringBuilder text = new StringBuilder();
         text.append("------ TRANSCRIPT ------\n");
 
         for (ResultEntry result : results) {
             text.append(result.courseString()).append("\n\n");
+            text.append("------------------------\n");
         }
 
         return text.toString();
