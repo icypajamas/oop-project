@@ -38,6 +38,15 @@ public class SystemManager {
         courseStore.saveToFile("courses.dat", courses.getItems());
     }
 
+    public boolean removeCourse(String id, String code) {
+        Student student = students.search(id);
+        if (student != null) {
+            student.getTranscript().removeResult(code);
+            return true;
+        } else
+            return false;
+    }
+
     public String createReportString(String id) {
         Student student = students.search(id);
         if (student == null) {

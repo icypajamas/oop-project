@@ -25,6 +25,7 @@ public class RecordList<T> implements Serializable {
         items.add(item);
     }
 
+
     public void remove(String id) {
         boolean found = false;
         for (int i = 0; i < items.size(); i++) {
@@ -46,14 +47,14 @@ public class RecordList<T> implements Serializable {
             }
         }
     }
+
     public T search(String ID) {
         for (T item : items) {
             if (item instanceof Student) {
                 if (((Student) item).getStudentID().equalsIgnoreCase(ID)) {
                     return item;
                 }
-            }
-            else if (item instanceof Course) {
+            } else if (item instanceof Course) {
                 if (((Course) item).getCourseCode().equalsIgnoreCase(ID)) {
                     return item;
                 }

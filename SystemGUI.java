@@ -35,14 +35,16 @@ public class SystemGUI extends JFrame {
         JPanel viewReportStudentPanel = createViewReportStudentPanel();
         JPanel viewReportCoursesPanel = createViewReportCoursesPanel();
         JPanel globalStatsPanel = createGlobalStatsPanel();
+        JPanel deleteResultPanel = createDelPanel();
         JPanel recordResultPanel = createRecordResultPanel();
         JPanel[] allPanels = { menu, studentManagePanel, addStudentPanel, deleteStudentPanel, viewAllStudents,
-                manageCoursesPanel, addCoursePanel, assignCoursesPanel, deleteCoursesPanel, viewAllCourses,
+                manageCoursesPanel, addCoursePanel, assignCoursesPanel, deleteCoursesPanel, deleteResultPanel,
+                viewAllCourses,
                 viewReportPanel,
                 viewReportStudentPanel, viewReportCoursesPanel, globalStatsPanel, recordResultPanel };
         String[] tags = { "Menu", "StudentManage", "AddStudent", "DeleteStudent", "ViewAllStudent", "CourseManage",
                 "AddCourse",
-                "AssignCourse", "DeleteCourse", "ViewAllCourse",
+                "AssignCourse", "DeleteCourse", "DeleteResult", "ViewAllCourse",
                 "ViewReport", "ViewReportStudent",
                 "ViewReportCourse", "GlobalStats", "RecordResult" };
 
@@ -66,8 +68,10 @@ public class SystemGUI extends JFrame {
 
         // Button Grid
         String[] btnLabels = { "Student Management", "Course Management", "View Report", "Record Result",
+                "Delete REsult",
                 "Global Statistics" };
-        String[] tags = { "StudentManage", "CourseManage", "ViewReport", "RecordResult", "GlobalStats" };
+        String[] tags = { "StudentManage", "CourseManage", "ViewReport", "RecordResult", "DeleteResult",
+                "GlobalStats" };
         JPanel buttonGrid = new JPanel(new GridLayout(6, 1, 10, 10));
         for (int i = 0; i < 5; i++) {
             int index = i;
@@ -239,6 +243,61 @@ public class SystemGUI extends JFrame {
         buttonPanel.add(next);
         cover.add(buttonPanel, BorderLayout.SOUTH);
 
+        return cover;
+    }
+
+    // RESULT DELETE PANEL
+
+    public JPanel createDelPanel() {
+        JPanel cover = new JPanel(new BorderLayout());
+        cover.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
+
+        // Title Panel
+        JPanel titlePanel = createTitlePanel("Delete Result");
+        cover.add(titlePanel, BorderLayout.NORTH);
+
+        // Fields
+        JPanel centerPanel = new JPanel(new BorderLayout());
+        JPanel textPanel = new JPanel(new GridLayout(2, 2));
+        JLabel idLabel = new JLabel("Enter Student ID:");
+        JTextField idField = new JTextField(10);
+        JLabel codeLabel = new JLabel("Enter COurse code:");
+        JTextField codeField = new JTextField(10);
+        textPanel.add(idLabel);
+        textPanel.add(idField);
+        textPanel.add(codeLabel);
+        textPanel.add(codeField);
+        centerPanel.add(textPanel, BorderLayout.CENTER);
+        cover.add(centerPanel, BorderLayout.CENTER);
+
+        // Buttons
+        JPanel buttonPanel = new JPanel();
+        JButton back = new JButton("Back");
+        back.setFocusable(false);
+        back.addActionListener(e -> {
+            idField.setText("");
+            card.show(mainPanel, "StudentManage");
+        });
+        JButton delete = new JButton("Delete");
+        delete.setFocusable(false);
+        Course c = (Course) system.getCourses().search(codeField.getText());
+
+        delete.addActionListener(e -> {
+            if (system.studentHasResultForCourse(idField.getText(), c)) {
+                if (system.removeCourse(idField.getText(), codeField.getText())) {
+                    JOptionPane.showMessageDialog(cover, "Result Deleted Successfully", "RIP",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } else
+                    JOptionPane.showMessageDialog(cover, "Result does not exist", "Error", JOptionPane.ERROR_MESSAGE);
+            } else JOptionPane.showMessageDialog(cover, "Student does not exist", "Error", JOptionPane.ERROR_MESSAGE);
+
+            idField.setText("");
+            codeField.setText("");
+        });
+
+        buttonPanel.add(back);
+        buttonPanel.add(delete);
+        cover.add(buttonPanel, BorderLayout.SOUTH);
         return cover;
     }
 
@@ -794,7 +853,7 @@ public class SystemGUI extends JFrame {
         searchButton.setFocusable(false);
         searchButton.addActionListener(e -> {
             String code = courseCodeField.getText().trim();
-            model.setRowCount(0); 
+            model.setRowCount(0);
             if (!code.isEmpty()) {
                 Course found = null;
                 ArrayList<Course> courses = system.getCourses().getItems();

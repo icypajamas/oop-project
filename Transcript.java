@@ -33,6 +33,15 @@ class Transcript implements Serializable {
         results.add(result);
     }
 
+    public void removeResult(String code){
+        for(ResultEntry r : results){
+            String c = r.getCourse().getCourseCode();
+            if(c.equals(code)){
+                results.remove(r);
+            }
+        }
+    }
+
     public double getGPA() {
         double points = 0;
         double totalHours = 0;
